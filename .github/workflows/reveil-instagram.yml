@@ -1,0 +1,42 @@
+# Reveil du robot Instagram de KingDream Digital : 100 % GitHub, aucun autre service.
+#
+# Le robot de publication est dans le depot prive boriscorsiez/kingdream-digital (instagram.yml).
+# GitHub y lance ses horaires programmes avec des heures de retard. Ce reveil, dans ce depot public
+# (minutes GitHub gratuites), demarre tot le matin et pilote le robot :
+#   11 h 28  lancement en mode « Midi pile » : le post est en ligne a 12:00:00 ;
+#   12 h 04  controle : s'il n'est pas en ligne, publication immediate ;
+#   12 h 08  dernier controle : un passage bloque est annule et le post republie.
+#   -> le post est en ligne au plus tard vers 12 h 10.
+# Plusieurs horaires dans la matinee : le premier qui demarre attend l'heure ; un passage lance
+# trop tot s'arrete au bout de 5 h 45 et le suivant prend le relais. Detail : robot/reveil.py.
+#
+# Secret necessaire (Settings > Secrets and variables > Actions) : ROBOT_GITHUB_TOKEN, un jeton
+# GitHub limite au depot du robot, droits « Actions : Read and write » et « Contents : Read-only ».
+
+name: Reveil du robot Instagram
+
+on:
+  schedule:
+    - cron: "17 2-11 * * *"   # toutes les heures, de 3 h 17 a 12 h 17 a Paris en hiver (4 h 17 a 13 h 17 en ete)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reveil-instagram
+  cancel-in-progress: false
+
+jobs:
+  reveil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: robot
+
+      - name: Lancer le robot a 11 h 28, verifier a 12 h 04 et 12 h 08
+        env:
+          ROBOT_GITHUB_TOKEN: ${{ secrets.ROBOT_GITHUB_TOKEN }}
+        run: python3 robot/reveil.py
