@@ -12,7 +12,7 @@ Digital (dépôt privé `boriscorsiez/kingdream-digital`). Chaque jour :
 Le post est en ligne au plus tard vers 12 h 10. Les minutes GitHub de ce dépôt public sont
 gratuites.
 
-**Le seul réglage** : le secret `ROBOT_GITHUB_TOKEN` de ce dépôt (*Settings* → *Secrets and
+**En sommeil tant que le secret manque** (il s'arrête alors sans erreur). **Le seul réglage** : le secret `ROBOT_GITHUB_TOKEN` de ce dépôt (*Settings* → *Secrets and
 variables* → *Actions*). C'est un jeton GitHub à grain fin limité à `boriscorsiez/kingdream-digital`,
 avec les droits *Actions : Read and write* et *Contents : Read-only*.
 

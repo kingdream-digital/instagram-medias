@@ -219,8 +219,9 @@ def reveil(gh, horloge=lambda: dt.datetime.now(PARIS), dormir=time.sleep):
 def main():
     jeton = os.environ.get("ROBOT_GITHUB_TOKEN")
     if not jeton:
-        print("::error::Secret ROBOT_GITHUB_TOKEN manquant (Settings > Secrets and variables > Actions).")
-        return 1
+        # En sommeil tant que le secret n'existe pas : aucune erreur, aucun e-mail.
+        print("Reveil en sommeil : pas de secret ROBOT_GITHUB_TOKEN dans ce depot (voir robot/README.md).")
+        return 0
     try:
         journal(reveil(Github(jeton)))
     except ErreurGithub as e:
